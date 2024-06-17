@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8y#3g)o9pw)3i%_qc#p^9grb%cd20%oq$z^f7bgn7z-n^t*_@^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['8000-wgwhitecodin-djangoblog-cfk0mp8qeup.ws-eu114.gitpod.io',
+ALLOWED_HOSTS = ['8000-wgwhitecodin-djangoblog-ifqrqucowck.ws-eu114.gitpod.io',
                 '.herokuapp.com'
 ]
 
@@ -86,9 +86,24 @@ WSGI_APPLICATION = 'codestar.wsgi.application'
 #        'NAME': BASE_DIR / 'db.sqlite3',
 #   }
 #}
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+# Debug print to check the DATABASE_URL value
+print(f"DATABASE_URL: {DATABASE_URL}")
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 
 
 # Password validation
@@ -131,3 +146,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://8000-wgwhitecodin-djangoblog-ifqrqucowck.ws-eu114.gitpod.io',
+    'https://*.herokuapp.com',
+]
